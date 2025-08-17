@@ -61,7 +61,7 @@ class TurkicRules {
         continue;
       }
 
-      // Разрешённые кластеры
+      // öter tizekle
       let found = false;
       for (const cl of allowedClusters) {
         if (w.slice(i, i + cl.length) === cl) {
@@ -78,7 +78,7 @@ class TurkicRules {
       } else {
         consonantCount++;
         if (consonantCount > 2) {
-          // Специальные троичные кластеры
+          // ajrı üçlü tizekle
           const three = w.slice(i - 2, i + 1);
           const special3 = {
             cyrillic: ['ұққ','ққы','ққа','ққұ','ққс','рақ','рәк','лқы','нқы','құт'],
@@ -211,7 +211,7 @@ class TurkicRules {
   }
 }
 
-// Определяет алфавит слова
+// cazıvın ajıradı
 function detectAlphabet(word) {
   const w = word.toLowerCase();
   if (/[0-9]/.test(w)) return 'invalid_digits';
@@ -235,7 +235,7 @@ function detectAlphabet(word) {
   return 'unknown';
 }
 
-// Читает все .json-файлы, проверяет слова и сохраняет результат
+// bar salışlanı oqub cetekin cazadı
 function processFiles() {
   const correct   = {};
   const incorrect = {};
@@ -275,19 +275,19 @@ function processFiles() {
   }
 
   fs.writeFileSync(
-    path.join(outDir, 'correct.json'),
+    path.join(outDir, 'cuyre.json'),
     JSON.stringify(correct, null, 4),
     'utf8'
   );
   fs.writeFileSync(
-    path.join(outDir, 'incorrect.json'),
+    path.join(outDir, 'tuvra.json'),
     JSON.stringify(incorrect, null, 4),
     'utf8'
   );
 
-  console.log(`Результаты сохранены в папку ${outDir}/`);
-  console.log(`✔ Корректных: ${Object.keys(correct).length}`);
-  console.log(`✖ Некорректных: ${Object.keys(incorrect).length}`);
+  console.log(`Bitkeni mında ${outDir}/`);
+  console.log(`✔ tuvrası: ${Object.keys(correct).length}`);
+  console.log(`✖ çüyresi: ${Object.keys(incorrect).length}`);
 }
 
 if (require.main === module) {
