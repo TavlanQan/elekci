@@ -1,4 +1,3 @@
-// rules.js
 require('dotenv').config();
 const fs   = require('fs');
 const path = require('path');
@@ -37,6 +36,7 @@ class TurkicRules {
       latin:    ['a','e','i','o','u','ı','ï','ö','ü','ä','î','ê','â']
     }[alphabet];
 
+    // ОБЪЕДИНЕННЫЕ разрешенные кластеры из обоих файлов
     const allowedClusters = {
       cyrillic: [
         'рт','рд','лт','нч','нт','қс','қы','қа','қо','қу','ға','ғо','ғу',
@@ -45,7 +45,8 @@ class TurkicRules {
       ],
       latin: [
         'rt','rd','lt','nç','nt','qs','qı','qa','qo','qu','ğa','ğo','ğu',
-        'qş','qq','uq','raq','rək','rq','rğ','rx','rh','lq','lğ','nq','nğ'
+        'qş','qq','uq','raq','rək','rq','rğ','rx','rh','lq','lğ','nq','nğ',
+        'ngl'  // ← ДОБАВЛЕНО из tguc.js
       ]
     }[alphabet];
 
@@ -61,11 +62,12 @@ class TurkicRules {
         continue;
       }
 
-      // öter tizekle
+      // Разрешенные кластеры - улучшенная проверка из tguc.js
       let found = false;
       for (const cl of allowedClusters) {
-        if (w.slice(i, i + cl.length) === cl) {
-          i += cl.length;
+        const L = cl.length;
+        if (i + L <= w.length && w.slice(i, i + L) === cl) {
+          i += L;
           consonantCount = 0;
           found = true;
           break;
@@ -78,11 +80,11 @@ class TurkicRules {
       } else {
         consonantCount++;
         if (consonantCount > 2) {
-          // ajrı üçlü tizekle
+          // ОБЪЕДИНЕННЫЕ специальные троичные кластеры из обоих файлов
           const three = w.slice(i - 2, i + 1);
           const special3 = {
             cyrillic: ['ұққ','ққы','ққа','ққұ','ққс','рақ','рәк','лқы','нқы','құт'],
-            latin:    ['uqq','qqı','qqa','qqu','qqs','raq','rək','lqı','nqı','qut','ngl']
+            latin:    ['uqq','qqı','qqa','qqu','qqs','raq','rək','lqı','nqı','qut','ngl']  // ← ДОБАВЛЕНО из tguc.js
           }[alphabet];
 
           if (special3.includes(three)) {
@@ -118,7 +120,9 @@ class TurkicRules {
   }
 
   static checkVowelHarmony(word, alphabet) {
+    // УЛУЧШЕННАЯ обработка пробелов - из rules.js (более надежная)
     const parts = word.split(' ').filter(p => p.length);
+    
     for (const part of parts) {
       const sets = alphabet === 'cyrillic'
         ? {
@@ -211,7 +215,7 @@ class TurkicRules {
   }
 }
 
-// cazıvın ajıradı
+// Функция detectAlphabet из rules.js (более продвинутая)
 function detectAlphabet(word) {
   const w = word.toLowerCase();
   if (/[0-9]/.test(w)) return 'invalid_digits';
@@ -235,7 +239,7 @@ function detectAlphabet(word) {
   return 'unknown';
 }
 
-// bar salışlanı oqub cetekin cazadı
+// Функция processFiles из rules.js с тюркскими сообщениями
 function processFiles() {
   const correct   = {};
   const incorrect = {};
@@ -299,4 +303,3 @@ module.exports = {
   detectAlphabet,
   processFiles
 };
-

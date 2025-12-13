@@ -2,15 +2,76 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Turkic Dictionary Processor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TÜRÜK SÖZLÜK ELETİVÇÜ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <h1>Загрузка словарей</h1>
+  <div class="container">
+    <header class="header">
+      <div class="logo-container">
+        <i class="fas fa-book-open logo-icon"></i>
+        <div>
+          <h1 class="title">TÜRÜK SÖZLÜK ELETİVÇÜ</h1>
+          <p class="subtitle">Словарь для проверки и обработки тюркских словарей</p>
+        </div>
+      </div>
+    </header>
 
-  <input type="file" id="files" multiple accept=".json" />
-  <button id="process">Обработать</button>
+    <main class="main-content">
+      <div class="upload-section">
+        <div class="upload-area" id="drop-area">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <h3>Загрузите JSON файлы словарей</h3>
+          <p>Перетащите файлы сюда или нажмите для выбора</p>
+          <input type="file" id="files" multiple accept=".json" />
+          <label for="files" class="browse-btn">Выбрать файлы</label>
+          <div class="file-list" id="file-list"></div>
+        </div>
 
-  <div id="download-links"></div>
+        <div class="action-section">
+          <button id="process" class="process-btn">
+            <i class="fas fa-cogs"></i>
+            <span>ELERGE (Обработать)</span>
+          </button>
+          <p class="hint">
+            <i class="fas fa-info-circle"></i>
+            EM AZI BILA BIR JSON SALIŞNI SAJLA (Выберите хотя бы один JSON файл)
+          </p>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <h2><i class="fas fa-download"></i> Результаты обработки</h2>
+        <div class="download-cards" id="download-links">
+          <div class="result-card placeholder">
+            <i class="fas fa-file-export"></i>
+            <p>После обработки здесь появятся ссылки для скачивания</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-card">
+          <h3><i class="fas fa-check-circle"></i> KIRSIZ (Правильные)</h3>
+          <p>Слова, прошедшие проверку правил</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-exclamation-circle"></i> KIRME (Неправильные)</h3>
+          <p>Слова, не соответствующие правилам</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-code"></i> JSON формат</h3>
+          <p>Файлы должны быть в формате JSON</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>TÜRÜK SÖZLÜK ELETİVÇÜ © 2024</p>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
