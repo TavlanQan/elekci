@@ -5,6 +5,20 @@ A unique multi-stage word filtering program developed in 2025 by **Qandavır ulu
 ## Description
 Tguc is a novel algorithmic system for filtering, categorizing, and transforming word lists through multiple customizable stages. It provides flexible rule configuration, adaptive filtering logic, and high-performance scalability.
 
+A sample JSON structure of the initial array that the program can process.
+
+{
+  "SÖZ": [
+    "AÑILATIV"
+  ],
+  "söz": [
+    "añılatıv"
+  ],
+  "Söz": [
+    "Añılatıv"
+  ]
+}
+
 ## Author
 Created by **Qandavır ulu Tavlan**  
 © 2025. All rights reserved.
