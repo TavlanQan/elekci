@@ -386,3 +386,23 @@ body {
 .upload-section, .results-section, .info-section {
   animation: fadeIn 0.8s ease-out;
 }
+
+.mode-selector {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.mode-selector label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.mode-selector select {
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
