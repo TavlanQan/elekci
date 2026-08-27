@@ -17,14 +17,19 @@ const latClusters = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../datasets/forbidden_clusters_lat.json'), 'utf8')
 );
 
+const qazClusters = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../datasets/forbidden_clusters_qaz.json'), 'utf8')
+);
+
 const clusterSets = {
   latin: latClusters,
   cyrillic: cyrClusters,
-  kazakh: cyrClusters   // для казахского профиля используем кириллический набор
+  kazakh: qazClusters
 };
 
 console.log(`[DEBUG] Latin clusters loaded: ${latClusters.length}`);
 console.log(`[DEBUG] Cyrillic clusters loaded: ${cyrClusters.length}`);
+console.log(`[DEBUG] Qazaq clusters loaded: ${qazClusters.length}`);
 
 /**
  * Проверяет, содержит ли слово запрещённый кластер.
