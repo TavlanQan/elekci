@@ -5,7 +5,7 @@
  * Author: Qandavır ulu Tavlan
  */
 
-const { getVowelSets, getUndefinedVowels } = require('../core/alphabet');
+const { getVowelSets, getUndefinedVowels, extractEffectiveVowels } = require('../core/alphabet');
 
 /**
  * Возвращает допустимые переходы для заднего и переднего ряда
@@ -86,13 +86,10 @@ function checkVowelSequence(word, profile) {
   const back = vowelSets.back;
   const front = vowelSets.front;
 
-  // Извлекаем последовательность гласных, игнорируя согласные
-  const vowelsInWord = [];
-  for (const ch of w) {
-    if (back.includes(ch) || front.includes(ch)) {
-      vowelsInWord.push(ch);
-    }
-  }
+  // Извлекаем эффективные гласные (у после гласной — глайд)
+  const vowelsInWord = extractEffectiveVowels(word, profile)
+    .filter(v => back.includes(v.ch) || front.includes(v.ch))
+    .map(v => v.ch);
 
   // Если гласных меньше двух, правило не применимо
   if (vowelsInWord.length < 2) return null;

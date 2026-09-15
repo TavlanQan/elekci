@@ -6,7 +6,7 @@
  * Author: Qandavır ulu Tavlan
  */
 
-const { getVowelSets, getUndefinedVowels } = require('../core/alphabet');
+const { getVowelSets, getUndefinedVowels, extractEffectiveVowels } = require('../core/alphabet');
 
 /**
  * Проверяет сингармонизм.
@@ -28,13 +28,9 @@ function checkVowelHarmony(word, profile) {
 
   const back = vowelSets.back;
   const front = vowelSets.front;
-  const used = [];
-
-  for (const ch of w) {
-    if (back.includes(ch) || front.includes(ch)) {
-      used.push(ch);
-    }
-  }
+  const used = extractEffectiveVowels(word, profile)
+    .filter(v => back.includes(v.ch) || front.includes(v.ch))
+    .map(v => v.ch);
 
   // Если гласных нет — правило не нарушено (слово будет обработано другими правилами)
   if (used.length === 0) return null;

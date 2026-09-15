@@ -23,7 +23,7 @@ const PROFILES = {
       front: ['е', 'ё', 'ю', 'и']
     },
     forbiddenExtraVowels: ['â', 'э', 'я'],
-    specificLetters: new Set(['ө', 'ү', 'ғ', 'қ', 'ң', 'ә', 'і',])
+    specificLetters: new Set(['ө', 'ү', 'ғ', 'қ', 'ң', 'ә', 'і'])
   },
   kazakh: {
     name: 'kazakh',
@@ -54,6 +54,8 @@ const LATIN_SPECIFIC = new Set([
 const CYRILLIC_SPECIFIC = new Set([
   'ә', 'ө', 'ү', 'ң', 'ғ', 'қ', 'і', 'ұ'
 ]);
+
+const CONSONANT_DIGRAPHS = new Set(['гъ', 'къ']);
 
 /**
  * Определяет алфавит по большинству букв.
@@ -133,12 +135,57 @@ function getUndefinedVowels(profile) {
   return p?.undefinedVowels || [];
 }
 
+/**
+ * Возвращает массив эффективных гласных в слове с учётом контекста.
+ * В тюркских кириллических профилях (cyrillic, kazakh) буква 'у'
+ * считается глайдом (согласной), если непосредственно перед ней
+ * стоит уже принятая эффективная гласная. Это даёт чередование
+ * гл-согл-гл-согл в сериях вида "уууу".
+ * @param {string} word
+ * @param {string} profile
+ * @returns {Array<{ch: string, index: number}>}
+ */
+function extractEffectiveVowels(word, profile) {
+  const vowelSets = getVowelSets(profile);
+  if (!vowelSets) return [];
+
+  const w = word.toLowerCase();
+  const undefinedVowels = getUndefinedVowels(profile) || [];
+  const allVowels = new Set([
+    ...vowelSets.back,
+    ...vowelSets.front,
+    ...undefinedVowels
+  ]);
+
+  const result = [];
+  for (let i = 0; i < w.length; i++) {
+    const ch = w[i];
+    if (!allVowels.has(ch)) continue;
+
+    // 'у' — глайд, если непосредственно перед ней стоит
+    // уже принятая эффективная гласная (result[last].index === i - 1).
+    if (
+      (profile === 'cyrillic' || profile === 'kazakh') &&
+      ch === 'у' &&
+      result.length > 0 &&
+      result[result.length - 1].index === i - 1
+    ) {
+      continue;
+    }
+
+    result.push({ ch, index: i });
+  }
+  return result;
+}
+
 module.exports = {
   PROFILES,
   detectAlphabet,
   detectProfile,
   getVowelSets,
   getUndefinedVowels,
+  extractEffectiveVowels,
+  CONSONANT_DIGRAPHS,
   LATIN_BASE,
   LATIN_SPECIFIC,
   CYRILLIC_BASE,
