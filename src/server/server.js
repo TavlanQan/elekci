@@ -13,7 +13,7 @@ const { processDictionary } = require('../pipeline/pipeline');
 
 const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 
 // Раздача статики из public/
 app.use(express.static(path.join(__dirname, '../../public')));
